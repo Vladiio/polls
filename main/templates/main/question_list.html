@@ -3,6 +3,7 @@
 {% block title %} Main page {% endblock %}
 
 {% block content %}
+    <h4>Active pools</h4>
     <ul>
     {% for question in object_list %}
         {% if question.is_active %}

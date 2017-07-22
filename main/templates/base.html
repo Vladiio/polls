@@ -13,6 +13,11 @@
     <title>Pools | {% block title %}{% endblock %}</title>
   </head>
   <body>
+    <h4>Navigation</h4>
+    <ul>
+      <li><a href="{% url 'index' %}">Home</a></li>
+      <li><a href="{% url 'add-question' %}">Create poll</a></li>
+    </ul>
     {% block content %}{% endblock %}
 
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
