@@ -1,3 +1,18 @@
 from django.db import models
+from django.utils.text import slugify
 
-# Create your models here.
+
+class Question(models.Model):
+    slug = models.SlugField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
+    creation_date = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
+class Answer(models.Model):
+    content = models.CharField(max_length=100)
+    question = models.ForeignKey(Question)
