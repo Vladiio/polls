@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ question.name }} {% endblock %}
+
+{% block content %}
+
+    <form action="">
+    {% for answer in question.answer_set.all %}
+        <input type="radio" name="answer" value="{{answer.content}}">{{answer.content}}</input>
+    {% endfor %}
+        <input type="submit">
+    </form>
+
+{% endblock %}
