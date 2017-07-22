@@ -12,7 +12,15 @@ class Question(models.Model):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return self.name
+
 
 class Answer(models.Model):
     content = models.CharField(max_length=100)
-    question = models.ForeignKey(Question)
+    question = models.ForeignKey(
+        Question,
+        on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.content
