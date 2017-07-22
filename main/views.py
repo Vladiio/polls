@@ -1,3 +1,12 @@
 from django.shortcuts import render
+from django.views import generic
 
-# Create your views here.
+from main.models import Question
+
+
+class IndexView(generic.ListView):
+    model = Question
+
+
+class DetailView(generic.DetailView):
+    model = Question
