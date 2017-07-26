@@ -11,8 +11,13 @@ urlpatterns = [
         views.DetailView.as_view(),
         name="detail"),
     
-    # /pools/add_question/
+    # /add_question/
     url(r'^add_question/$',
         views.QuestionCreate.as_view(),
         name="add-question"),
+
+    # /edit_qustion/1
+    url(r'^edit_qustion/(?P<pk>\d+)/$',
+        views.QuestionEdit.as_view(),
+        name="edit-question"),
 ]

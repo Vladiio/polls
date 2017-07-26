@@ -3,11 +3,12 @@
 {% block title %} {{ question.name }} {% endblock %}
 
 {% block content %}
-    <form action="">
+    <form action="." method="post">
     {% for answer in question.answer_set.all %}
         <input type="radio" name="answer" value="{{answer.content}}">{{answer.content}}</input>
     {% endfor %}
-        <input type="submit">
+        <input type="submit" class="btn btn-success">
+        <a class="btn btn-primary" href="{% url 'edit-question' question.pk %}">Edit poll</a>
     </form>
 
 {% endblock %}

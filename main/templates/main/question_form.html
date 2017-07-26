@@ -2,4 +2,13 @@
 
 {% block title %} Create new poll {% endblock %}
 
-{% block content %} {{form}} {% endblock %}
+{% block content %}
+
+<form action="." method="post" class="form">
+  {% csrf_token %}
+    {{form}}
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form> 
+
+{% endblock %}

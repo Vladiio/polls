@@ -4,6 +4,8 @@ from main import models
 
 
 class CreateQuestionForm(forms.ModelForm):
+    answer = forms.CharField()
 
     class Meta:
-        model = models.Qustion
+        model = models.Question
+        fields = ('name',)
