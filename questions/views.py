@@ -10,15 +10,15 @@ from .models import Question, Answer
 from .forms import CreateQuestionForm
 
 
-class IndexView(ListView):
+class QuestionListView(ListView):
     model = Question
 
 
-class DetailView(DetailView):
+class QuestionDetailView(DetailView):
     model = Question
 
 
-class QuestionCreate(CreateView):
+class QuestionCreateView(CreateView):
     form_class = CreateQuestionForm
     template_name = "main/question_form.html"
 
@@ -36,6 +36,6 @@ class QuestionCreate(CreateView):
         return context
 
 
-class QuestionEdit(UpdateView):
+class QuestionUpdateView(UpdateView):
     form_class = CreateQuestionForm
 

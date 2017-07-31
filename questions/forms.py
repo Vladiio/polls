@@ -1,11 +1,11 @@
 from django import forms
 
-from main import models
+from .models import Question
 
 
 class CreateQuestionForm(forms.ModelForm):
     answer = forms.CharField()
 
     class Meta:
-        model = models.Question
+        model = Question
         fields = ('name',)

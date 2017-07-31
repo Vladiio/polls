@@ -4,8 +4,8 @@ from django.urls import reverse
 
 
 class Question(models.Model):
-    slug = models.SlugField(max_length=100)
     name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100)
     creation_date = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
 
@@ -24,7 +24,7 @@ class Answer(models.Model):
     content = models.CharField(max_length=100)
     question = models.ForeignKey(
             Question, on_delete=models.CASCADE)
-    votes = models.IntegerField()
+    votes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.content
