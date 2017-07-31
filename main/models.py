@@ -23,8 +23,8 @@ class Question(models.Model):
 class Answer(models.Model):
     content = models.CharField(max_length=100)
     question = models.ForeignKey(
-        Question,
-        on_delete=models.CASCADE)
+            Question, on_delete=models.CASCADE)
+    votes = models.IntegerField()
 
     def __str__(self):
         return self.content

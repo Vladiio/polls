@@ -1,29 +1,32 @@
 from django.shortcuts import render
-from django.views import generic
-from django.views.generic import edit
-from django.urls import reverse_lazy
+from django.views.generic import (
+        ListView,
+        DetailView,
+        CreateView,
+        UpdateView
+        )
 
-from main import models
-from main import forms
-
-
-class IndexView(generic.ListView):
-    model = models.Question
-
-
-class DetailView(generic.DetailView):
-    model = models.Question
+from .models import Question, Answer
+from .forms import CreateQuestionForm
 
 
-class QuestionCreate(edit.CreateView):
-    form_class = forms.CreateQuestionForm
+class IndexView(ListView):
+    model = Question
+
+
+class DetailView(DetailView):
+    model = Question
+
+
+class QuestionCreate(CreateView):
+    form_class = CreateQuestionForm
     template_name = "main/question_form.html"
 
     def form_valid(self, form):
         answer = form.cleaned_data.get('answer')
         question = form.save()
-        new_answer = models.Answer.objects.create(content=answer,
-                                                  question=question)
+        new_answer = Answer.objects.create(content=answer,
+                                                                      question=question)
         new_answer.save()
         return super().form_valid(form)
 
@@ -33,7 +36,6 @@ class QuestionCreate(edit.CreateView):
         return context
 
 
-
-class QuestionEdit(edit.UpdateView):
-    form_class = forms.CreateQuestionForm
+class QuestionEdit(UpdateView):
+    form_class = CreateQuestionForm
 
