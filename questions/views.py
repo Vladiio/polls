@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views.generic import (
         ListView,
         DetailView,
@@ -11,11 +12,38 @@ from .forms import CreateQuestionForm
 
 
 class QuestionListView(ListView):
-    model = Question
+
+    def get_queryset(self):
+        return Question.objects.all()
 
 
 class QuestionDetailView(DetailView):
-    model = Question
+
+    def get_queryset(self):
+        return Question.objects.all()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        question = self.get_object()
+        allow_vote = True
+        if self.request.user in question.members.all():
+            allow_vote = False
+        context['allow_vote'] = allow_vote
+        return context
+
+    def post(self, request, *args, **kwargs):
+        answer_id = request.POST.get('answer_id')
+        question_slug = request.POST.get('question_slug')
+
+        question = Question.objects.get(slug=question_slug)
+        question.members.add(request.user)
+
+        if answer_id:
+            answer = Answer.objects.get(id=answer_id)
+            answer.votes += 1
+            answer.save()
+
+        return redirect(reverse_lazy('questions:detail', kwargs={'slug': question_slug}))
 
 
 class QuestionCreateView(CreateView):
@@ -38,4 +66,4 @@ class QuestionCreateView(CreateView):
 
 class QuestionUpdateView(UpdateView):
     form_class = CreateQuestionForm
-
+    model = Question

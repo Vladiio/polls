@@ -3,12 +3,13 @@
 {% block title %} {{ question.name }} {% endblock %}
 
 {% block content %}
-    <form action="." method="post">
-    {% for answer in question.answer_set.all %}
-        <input type="radio" name="answer" value="{{answer.content}}">{{answer.content}}</input>
-    {% endfor %}
-        <input type="submit" class="btn btn-success">
-        <a class="btn btn-primary" href="{% url 'edit-question' question.pk %}">Edit poll</a>
-    </form>
+        {% if allow_vote %}
+            {% include 'questions/snippets/pool_form.html' with question=question %}
+        {% else %}
+            <h4>Results for "{{ question.name }}"</h4>
+            {% for answer in question.answer_set.all %}
+                <p>{{ answer.content }} | {{ answer.votes }}</p>
+            {% endfor %}
+        {% endif %}
 
 {% endblock %}

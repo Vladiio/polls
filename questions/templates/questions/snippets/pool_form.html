@@ -1,0 +1,9 @@
+<form action="." method="post">
+  {% csrf_token %}
+  <input type="hidden" name="question_slug" value="{{ question.slug }}">
+  {% for answer in question.answer_set.all %}
+    <input type="radio" name="answer_id" value="{{ answer.id }}">{{answer.content}}</input>
+  {% endfor %}
+  <input type="submit" class="btn btn-success">
+  <a class="btn btn-primary" href="{% url 'questions:update' question.pk %}">Edit poll</a>
+</form>

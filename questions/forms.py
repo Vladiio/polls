@@ -4,7 +4,7 @@ from .models import Question
 
 
 class CreateQuestionForm(forms.ModelForm):
-    answer = forms.CharField()
+    answer1 = forms.CharField()
 
     class Meta:
         model = Question
