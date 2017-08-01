@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
         ListView,
@@ -8,7 +9,7 @@ from django.views.generic import (
         )
 
 from .models import Question, Answer
-from .forms import CreateQuestionForm
+from .forms import CreateQuestionForm, PoolForm
 
 
 class QuestionListView(ListView):
@@ -17,7 +18,7 @@ class QuestionListView(ListView):
         return Question.objects.all()
 
 
-class QuestionDetailView(DetailView):
+class QuestionDetailView(LoginRequiredMixin, DetailView):
 
     def get_queryset(self):
         return Question.objects.all()
@@ -26,7 +27,9 @@ class QuestionDetailView(DetailView):
         context = super().get_context_data(*args, **kwargs)
         question = self.get_object()
         allow_vote = True
-        if self.request.user in question.members.all():
+        allow_update = False
+        user = self.request.user
+        if not user.is_authenticated() or user in question.members.all():
             allow_vote = False
         context['allow_vote'] = allow_vote
         return context
@@ -46,7 +49,7 @@ class QuestionDetailView(DetailView):
         return redirect(reverse_lazy('questions:detail', kwargs={'slug': question_slug}))
 
 
-class QuestionCreateView(CreateView):
+class QuestionCreateView(LoginRequiredMixin, CreateView):
     form_class = CreateQuestionForm
     template_name = "main/question_form.html"
 
@@ -64,6 +67,6 @@ class QuestionCreateView(CreateView):
         return context
 
 
-class QuestionUpdateView(UpdateView):
+class QuestionUpdateView(LoginRequiredMixin, UpdateView):
     form_class = CreateQuestionForm
     model = Question

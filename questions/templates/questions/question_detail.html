@@ -11,5 +11,8 @@
                 <p>{{ answer.content }} | {{ answer.votes }}</p>
             {% endfor %}
         {% endif %}
+        {% if request.user.id == question.author.id %}
+          <a class="btn btn-primary" href="{% url 'questions:update' question.pk %}">Edit poll</a>
+        {% endif %}
 
 {% endblock %}
