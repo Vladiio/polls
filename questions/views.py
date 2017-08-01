@@ -9,7 +9,7 @@ from django.views.generic import (
         )
 
 from .models import Question, Answer
-from .forms import CreateQuestionForm, PoolForm
+from .forms import CreateQuestionForm
 
 
 class QuestionListView(ListView):
