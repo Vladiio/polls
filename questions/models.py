@@ -5,7 +5,7 @@ from django.conf import settings
 
 
 class Question(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    title = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -16,23 +16,20 @@ class Question(models.Model):
                                                                     blank=True,
                                                                     related_name='completed_questions')
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        self.members.add(self.author)
-        super().save(*args, **kwargs)
-
     def get_absolute_url(self):
-        return reverse('questions:detail', kwargs={'slug': self.slug})
+        return reverse('questions:detail-update', kwargs={'slug': self.slug})
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class Answer(models.Model):
-    content = models.CharField(max_length=100)
-    question = models.ForeignKey(
-            Question, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
     votes = models.IntegerField(default=0)
+    picture = models.ImageField(upload_to='answer_picture', blank=True)
+
+    question = models.ForeignKey(Question,
+                                                       on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.content
+        return self.title

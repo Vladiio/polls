@@ -1,13 +1,2 @@
-<form action="." method="post">
-  {% csrf_token %}
-  <input type="hidden" name="question_slug" value="{{ question.slug }}">
-  {% for answer in question.answer_set.all %}
-    <div>
-      <input type="radio" name="answer_id" value="{{ answer.id }}">{{answer.content}}</input>
-    </div>
 
-  {% endfor %}
-  <div >
-    <input type="submit" class="btn btn-success">
-  </div>
-</form>
+

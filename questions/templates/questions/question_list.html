@@ -3,13 +3,19 @@
 {% block title %} Main page {% endblock %}
 
 {% block content %}
-    <h4>Active pools</h4>
-    <ul>
-    {% for question in object_list %}
-        {% if question.is_active %}
-            <li><a href="{{ question.get_absolute_url }}">{{ question.name }}</a></li>
-        {% endif %}
-    {% endfor %}
-    </ul>
+  <div class="row">
+    <div class="col-sm-2">
+      <h4>Active pools</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+        <ul>
+        {% for question in object_list %}
+            <li><a href="{{ question.get_absolute_url }}">{{ question.title }}</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
 
 {% endblock %}
