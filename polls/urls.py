@@ -2,6 +2,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
+from django.conf.urls.static import static
+from django.conf import settings
 
 from questions.views import QuestionListView
 
@@ -14,3 +16,6 @@ urlpatterns = [
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^questions/', include('questions.urls', namespace='questions')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
