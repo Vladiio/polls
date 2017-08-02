@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block title %} {{ question.title }} {% endblock %}
 
@@ -6,13 +7,23 @@
           <div class="col-sm-5 offset-sm-5">
             <h4>{{ question.title }}</h4>
             {% if allow_vote %}
-
+          </div>
+          <div class="row">
             {% for answer in question.answer_set.all %}
-            <div class="card">
-              {{answer.title}}
-              {% if answer.picture %}
-              <img src="{{answer.picture.url }}" alt="img">
-              {% endif %}
+            <div class="col-sm-3 offset-sm-1">
+              <div class="card">
+                {% if answer.picture %}
+                <img class="card-img-top" src="{{answer.picture.url }}" alt="img">
+                {% else %}
+                <img class="card-img-top" src="{% static 'images/no_picture.png' %}" alt="img">
+                {% endif %}
+                <div class="card-block">
+                  <h4 class="card-title">{{answer.title}}</h4>
+                  <p class="card-text"></p>
+                  <a href="#" class="btn btn-primary">Vote</a>
+                </div>
+
+              </div>
             </div>
 
             {% endfor %}
