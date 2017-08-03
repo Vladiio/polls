@@ -12,7 +12,14 @@
     <div class="col-sm-4">
         <ul>
         {% for question in object_list %}
-            <li><a href="{{ question.get_absolute_url }}">{{ question.title }}</a></li>
+            <li>
+              <a href="{{ question.get_absolute_url }}">
+                {{ question.title }}
+                {% if request.user in question.members.all %}
+                <span class="badge badge-default">Voted</span>
+                {% endif %}
+              </a>
+            </li>
         {% endfor %}
         </ul>
       </div>

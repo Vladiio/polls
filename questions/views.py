@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -12,10 +13,25 @@ from .models import Question, Answer
 from .forms import CreateQuestionForm
 
 
+def vote_view(request, slug=None, votes=0):
+    if request.is_ajax():
+        question = Question.objects.get(slug=slug)
+        answer_id = request.GET.get('answer_id', '')
+        answer = question.answer_set.get(id=answer_id)
+
+        if request.user not in question.members.all():
+            answer.votes += 1
+            answer.save()
+            question.members.add(request.user)
+
+        return JsonResponse({"votes": answer.votes})
+
+
 class QuestionListView(ListView):
 
     def get_queryset(self):
         return Question.objects.filter(is_active=True)
+
 
 
 class QuestionUpdateView(DetailView):

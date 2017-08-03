@@ -5,8 +5,7 @@
 
 {% block content %}
           <div class="col-sm-5 offset-sm-5">
-            <h4>{{ question.title }}</h4>
-            {% if allow_vote %}
+            <h4 class="detail-header">{{ question.title }}</h4>
           </div>
           <div class="row">
             {% for answer in question.answer_set.all %}
@@ -20,23 +19,20 @@
                 <div class="card-block">
                   <h4 class="card-title">{{answer.title}}</h4>
                   <p class="card-text"></p>
-                  <a href="#" class="btn btn-primary">Vote</a>
+                  <div class="vote-group">
+                  <span id="vote_{{answer.id}}" class="badge badge-default">Total {{ answer.votes }}</span>
+                  {% if allow_vote %}
+                    <button type="button" data-answer={{ answer.id }} class="btn btn-primary btn-sm vote">Vote
+                    </button>
+                    {% endif %}
+                  </div>
+
                 </div>
 
               </div>
             </div>
 
             {% endfor %}
-            {% else %}
-                <h4>Results for "{{ form.instance.title }}"</h4>
-                {% for answer in form.instance.answer_set.all %}
-                  <div class="card">
-                    {{ answer.title }} | {{ answer.votes }}
-                  </div>
-                    <p></p>
-                {% endfor %}
-            {% endif %}
-            </div>
           {% if request.user.id == form.instance.author.id %}
             <div class="col-sm-2 offset-sm-5 edit-form">
               <h4> Edit your pool</h4>
@@ -44,7 +40,7 @@
                     {% csrf_token %}
                     {{ form.as_p }}
 
-                    <input type="submit" class="btn btn-primary btn-sm" value="Update">
+                    <input type="submit" class="btn btn-default btn-sm" value="Update">
                 </form>
             </div>
 
