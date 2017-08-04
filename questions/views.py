@@ -37,36 +37,46 @@ class QuestionListView(ListView):
         return Question.objects.filter(is_active=True)
 
 
-
-class QuestionDetailView(DetailView):
+class QuestionUpdateDetailView(UpdateView):
+    form_class = CreateQuestionForm
+    template_name = 'questions/update-detail.html'
 
     def get_queryset(self):
         return Question.objects.filter(is_active=True)
 
     def get_context_data(self, *args, **kwargs):
+        allow_vote = True
+        allow_edit = False
+
         context = super().get_context_data(*args, **kwargs)
         question = self.get_object()
-        allow_vote = True
         user = self.request.user
-        if not user.is_authenticated() or user in question.members.all():
+
+        if user in question.members.all():
             allow_vote = False
+        if user.id == question.author.id:
+            allow_edit = True
+
         context['allow_vote'] = allow_vote
+        context['allow_edit'] = allow_edit
         return context
+
+    def form_valid(self, form):
+        obj = self.get_object()
+        new_answer = form.cleaned_data.get('answer')
+        if new_answer:
+            new_answer = Answer.objects.create(title=new_answer,
+                                                                          question=obj)
+            new_answer.save()
+        return super().form_valid(form)
 
 
 class QuestionCreateView(LoginRequiredMixin, CreateView):
-    form_class = CreateQuestionForm
-    template_name = "main/question_form.html"
+    model = Question
+    fields = ('title',)
 
     def form_valid(self, form):
-        answer = form.cleaned_data.get('answer')
-        question = form.save()
-        new_answer = Answer.objects.create(content=answer,
-                                                                      question=question)
-        new_answer.save()
+        question = form.save(commit=False)
+        question.author = self.request.user
+        question.save()
         return super().form_valid(form)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        print(context)
-        return context

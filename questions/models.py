@@ -8,7 +8,8 @@ from .utils import generate_unique_slug
 
 
 class Question(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100,
+                                            help_text="Please, enter a title for your pool")
     slug = models.SlugField(max_length=100, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -20,14 +21,16 @@ class Question(models.Model):
                                                                     related_name='completed_questions')
 
     def get_absolute_url(self):
-        return reverse('questions:detail', kwargs={'slug': self.slug})
+        return reverse('questions:update-detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.title
 
 
 class Answer(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100,
+                                            help_text="Please, enter a new answer",
+                                            verbose_name="Answer")
     votes = models.IntegerField(default=0)
     picture = models.ImageField(upload_to='answer_picture', blank=True)
 

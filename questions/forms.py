@@ -4,16 +4,10 @@ from .models import Question, Answer
 
 
 class CreateQuestionForm(forms.ModelForm):
+    title = forms.CharField(help_text="Please, enter a title for your pool")
+    answer = forms.CharField(required=False, help_text="Please, enter a new choice")
 
     class Meta:
         model = Question
-        fields = ('title',)
+        fields = ('title', 'answer')
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        obj = kwargs.pop('instance')
-        count = 1
-        for answer in obj.answer_set.all():
-            name = f'answer{count}'
-            self.fields[name] = forms.CharField()
-            count += 1

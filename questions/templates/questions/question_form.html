@@ -3,12 +3,12 @@
 {% block title %} Create new poll {% endblock %}
 
 {% block content %}
-
+<h3 class="detail-header">Create new pool</h3>
 <form action="." method="post" class="form">
   {% csrf_token %}
-    {{form}}
+    {{ form.as_p}}
 
-    <button class="btn btn-primary" type="submit">Submit</button>
-</form> 
+    <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+</form>
 
 {% endblock %}
