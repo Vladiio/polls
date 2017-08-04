@@ -16,4 +16,5 @@ def generate_unique_slug(instance, new_slug=None):
         random_string = generate_unique_string()
         slug = f"{slug}-{random_string}"
         return generate_unique_slug(instance, slug)
+    print(slug)
     return slug

@@ -11,6 +11,6 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [
         AnswerInline,
     ]
-    prepopulated_fields = {"slug": ("title",)}
+    exclude = ('slug',)
 
 admin.site.register(Question, QuestionAdmin)
