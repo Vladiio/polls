@@ -2,6 +2,9 @@ from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
 from django.conf import settings
+from django.db.models.signals import pre_save
+
+from .utils import generate_unique_slug
 
 
 class Question(models.Model):
@@ -33,3 +36,11 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.title
+
+
+def question_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = generate_unique_slug(instance)
+
+
+pre_save.connect(question_pre_save_receiver, sender=Question)
