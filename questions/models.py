@@ -20,6 +20,9 @@ class Question(models.Model):
                                                                     blank=True,
                                                                     related_name='completed_questions')
 
+    class Meta:
+        ordering = ('-updated', '-timestamp')
+
     def get_absolute_url(self):
         return reverse('questions:update-detail', kwargs={'slug': self.slug})
 
