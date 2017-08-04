@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -19,7 +19,7 @@ class VoteView(View):
     def get(self, *args, **kwargs):
         if self.request.is_ajax():
             slug = self.kwargs.pop('slug')
-            question = Question.objects.filter(slug=slug).first()
+            question = get_object_or_404(Question, slug=slug)
             answer_id = self.request.GET.get('answer_id', '')
             answer = question.answer_set.filter(id=answer_id).first()
 
