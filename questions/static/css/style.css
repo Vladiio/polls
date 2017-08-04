@@ -5,3 +5,7 @@
 .detail-header {
     margin: 20px 0px;
 }
+
+.form-right {
+    float: right;
+}

@@ -5,8 +5,8 @@ from django.core.mail import send_mail
 
 from questions.utils import generate_unique_slug as generate_code
 
-
 User = settings.AUTH_USER_MODEL
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User)

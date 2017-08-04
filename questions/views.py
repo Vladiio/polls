@@ -37,9 +37,14 @@ class QuestionListView(ListView):
         return Question.objects.filter(is_active=True)[:5]
 
     def get_context_data(self, *args, **kwargs):
+        header = "Popular"
         context = super().get_context_data(*args, **kwargs)
-        qs = Question.objects.filter(is_active=True).order_by('-members')[:5]
-        context['popular_object_list'] = qs
+        qs = Question.objects.filter(is_active=True).order_by('-members')
+        query = self.request.GET.get('query')
+        qs = qs.search(query)
+
+        context['popular_object_list'] = qs[:5]
+        context['header'] = header
         return context
 
 

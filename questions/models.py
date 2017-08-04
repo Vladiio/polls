@@ -1,10 +1,31 @@
 from django.db import models
+from django.db.models import Q
 from django.utils.text import slugify
 from django.urls import reverse
 from django.conf import settings
 from django.db.models.signals import pre_save
 
 from .utils import generate_unique_slug
+
+
+class QuestionQuerySet(models.query.QuerySet):
+
+    def search(self, query):
+        if query:
+            return self.filter(
+                Q(title__iexact=query)|
+                Q(title__icontains=query)
+                ).distinct()
+        return self
+
+
+class QuestionManager(models.Manager):
+
+    def get_queryset(self):
+        return QuestionQuerySet(self.model, using=self._db)
+
+    def search(self, query):
+        return self.get_queryset().search(query)
 
 
 class Question(models.Model):
@@ -19,6 +40,8 @@ class Question(models.Model):
     members = models.ManyToManyField(settings.AUTH_USER_MODEL,
                                                                     blank=True,
                                                                     related_name='completed_questions')
+
+    objects = QuestionManager()
 
     class Meta:
         ordering = ('-updated', '-timestamp')
