@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
+        View,
         ListView,
         DetailView,
         CreateView,
@@ -13,18 +14,21 @@ from .models import Question, Answer
 from .forms import CreateQuestionForm
 
 
-def vote_view(request, slug=None, votes=0):
-    if request.is_ajax():
-        question = Question.objects.get(slug=slug)
-        answer_id = request.GET.get('answer_id', '')
-        answer = question.answer_set.get(id=answer_id)
+class VoteView(View):
 
-        if request.user not in question.members.all():
-            answer.votes += 1
-            answer.save()
-            question.members.add(request.user)
+    def get(self, *args, **kwargs):
+        if self.request.is_ajax():
+            slug = self.kwargs.pop('slug')
+            question = Question.objects.filter(slug=slug).first()
+            answer_id = self.request.GET.get('answer_id', '')
+            answer = question.answer_set.filter(id=answer_id).first()
 
-        return JsonResponse({"votes": answer.votes})
+            if self.request.user not in question.members.all():
+                answer.votes += 1
+                answer.save()
+                question.members.add(self.request.user)
+
+            return JsonResponse({"votes": answer.votes})
 
 
 class QuestionListView(ListView):
@@ -34,7 +38,7 @@ class QuestionListView(ListView):
 
 
 
-class QuestionUpdateView(DetailView):
+class QuestionDetailView(DetailView):
 
     def get_queryset(self):
         return Question.objects.filter(is_active=True)
