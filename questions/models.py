@@ -39,10 +39,8 @@ class Answer(models.Model):
 
 
 def question_pre_save_receiver(sender, instance, *args, **kwargs):
-    print(instance.slug)
     if not instance.slug:
         instance.slug = generate_unique_slug(instance)
-        print(instance.slug)
 
 
 pre_save.connect(question_pre_save_receiver, sender=Question)
