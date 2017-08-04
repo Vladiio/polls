@@ -34,7 +34,13 @@ class VoteView(View):
 class QuestionListView(ListView):
 
     def get_queryset(self):
-        return Question.objects.filter(is_active=True)
+        return Question.objects.filter(is_active=True)[:5]
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        qs = Question.objects.filter(is_active=True).order_by('-members')[:5]
+        context['popular_object_list'] = qs
+        return context
 
 
 class QuestionUpdateDetailView(UpdateView):

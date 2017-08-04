@@ -4,16 +4,19 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-sm-2">
-      <h4 class="detail-header">Recent pools</h4>
+    <div class="col-sm-4">
+      <h4 class="detail-header">Recent</h4>
+    </div>
+    <div class="col-sm-4">
+      <h4 class="detail-header">Popular</h4>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-4">
-        <ul>
+        <ul nav flex-column>
         {% for question in object_list %}
-            <li>
-              <a href="{{ question.get_absolute_url }}">
+            <li class="nav item">
+              <a class="nav-link" href="{{ question.get_absolute_url }}">
                 {{ question.title }}
                 {% if request.user in question.members.all %}
                 <span class="badge badge-default">Voted</span>
@@ -23,6 +26,21 @@
         {% endfor %}
         </ul>
       </div>
+
+      <div class="col-sm-4">
+          <ul nav flex-column>
+          {% for question in popular_object_list %}
+              <li class="nav item">
+                <a class="nav-link" href="{{ question.get_absolute_url }}">
+                  {{ question.title }}
+                  {% if request.user in question.members.all %}
+                  <span class="badge badge-default">Voted</span>
+                  {% endif %}
+                </a>
+              </li>
+          {% endfor %}
+          </ul>
+        </div>
     </div>
 
 {% endblock %}
