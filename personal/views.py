@@ -9,6 +9,3 @@ class RegisterView(CreateView):
     form_class = RegisterForm
     template_name = 'personal/register.html'
     success_url = '/login/'
-
-    def form_valid(self, form):
-        pass

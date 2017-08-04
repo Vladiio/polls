@@ -14,7 +14,8 @@ urlpatterns = [
     url(r'^$', QuestionListView.as_view(), name='home'),
     url(r'^about/$', TemplateView.as_view(
             template_name='about.html'), name='about'),
-    url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^login/$', LoginView.as_view(
+            template_name='personal/login.html'), name='login'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^register/$', RegisterView.as_view(), name="register"),
     url(r'^questions/', include('questions.urls', namespace='questions')),
