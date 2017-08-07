@@ -131,9 +131,4 @@ LOGOUT_REDIRECT_URL = '/'
 
 # EMAIL
 
-DEFAULT_FROM_EMAIL = 'no-reply@us-west-2.compute.amazonaws.com'
-
-try:
-    HOSTNAME = socket.gethostname()
-except:
-    HOSTNAME = 'localhost'
+DEFAULT_FROM_EMAIL = 'admin@us-west-2.compute.amazonaws.com'
