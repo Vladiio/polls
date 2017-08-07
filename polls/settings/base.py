@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '^0ohgmtccta_d$)^0^xvn7%937@jpxn$mm7#!z$+_r(ng&#)m#'
 
-ALLOWED_HOSTS = ['34.211.16.114']
+ALLOWED_HOSTS = ['34.211.16.114', 'localhost']
 
 
 # Application definition
@@ -127,3 +127,7 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/'
+
+# EMAIL
+
+DEFAULT_FROM_EMAIL = 'no-reply@us-west-2.compute.amazonaws.com'

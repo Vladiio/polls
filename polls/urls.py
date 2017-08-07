@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^login/$', LoginView.as_view(
             template_name='personal/login.html'), name='login'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
+    url(r'^activate/(?P<code>[\w\d]+)$', LogoutView.as_view(), name='activate'),
     url(r'^register/$', RegisterView.as_view(), name="register"),
     url(r'^questions/', include('questions.urls', namespace='questions')),
     # url(r'^personal/', include('personal.urls', namespace='personal')),
