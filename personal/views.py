@@ -14,7 +14,10 @@ class RegisterView(CreateView):
 
 def activate_view(request, code=None):
     profile = get_object_or_404(Profile, activation_key=code)
-    profile.user.is_active = True
+    user_ = profile.user
+    user_.is_active = True
+    user_.save()
     profile.activated = True
+    profile.activation_key = None
     profile.save()
-    return redirect('/')
+    return redirect('/login/')
