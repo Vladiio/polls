@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView
 from django.core.urlresolvers import reverse
 
@@ -12,8 +12,9 @@ class RegisterView(CreateView):
     success_url = '/login/'
 
 
-def activate_view(request, code):
-    profile = get_object_or_404(Profile, code=code)
+def activate_view(request, code=None):
+    profile = get_object_or_404(Profile, activation_key=code)
     profile.user.is_active = True
     profile.activated = True
     profile.save()
+    return redirect('/')

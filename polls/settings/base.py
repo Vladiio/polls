@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -131,3 +132,8 @@ LOGOUT_REDIRECT_URL = '/'
 # EMAIL
 
 DEFAULT_FROM_EMAIL = 'no-reply@us-west-2.compute.amazonaws.com'
+
+try:
+    HOSTNAME = socket.gethostname()
+except:
+    HOSTNAME = 'localhost'

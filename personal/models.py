@@ -21,9 +21,10 @@ class Profile(models.Model):
             self.activation_key = generate_code(size=10)
             self.save()
             path_ = reverse('activate', kwargs={'code': self.activation_key})
+            hostname = settings.HOSTNAME
             subject = "Account activation"
             from_email = settings.DEFAULT_FROM_EMAIL
-            body = f'To continue registration you need to activate your account: {path_}'
+            body = f'You need to activate your account: {hostname}{path_}'
             recipient_list = [self.user.email]
             sent_email = send_mail(subject,
                                                      body,
