@@ -35,6 +35,7 @@ class Question(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
+    total_votes = models.IntegerField(default=0)
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL,

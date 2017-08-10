@@ -26,7 +26,10 @@ class VoteView(View):
             if self.request.user not in question.members.all():
                 answer.votes += 1
                 answer.save()
+
                 question.members.add(self.request.user)
+                question.total_votes += 1
+                question.save()
 
             return JsonResponse({"votes": answer.votes})
 
@@ -39,7 +42,7 @@ class QuestionListView(ListView):
     def get_context_data(self, *args, **kwargs):
         header = "Popular"
         context = super().get_context_data(*args, **kwargs)
-        qs = Question.objects.filter(is_active=True).order_by('-members')
+        qs = Question.objects.filter(is_active=True).order_by('-total_votes')
         query = self.request.GET.get('query')
         qs = qs.search(query)
 
