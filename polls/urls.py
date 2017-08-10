@@ -5,8 +5,13 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.conf.urls.static import static
 from django.conf import settings
 
+from rest_framework.routers import DefaultRouter
+
 from questions.views import QuestionListView
-from personal.views import RegisterView, activate_view
+from personal.views import RegisterView, activate_view, UserViewSet
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
 
 
 urlpatterns = [
@@ -20,7 +25,8 @@ urlpatterns = [
     url(r'^activate/(?P<code>[\w\d]+)$', activate_view, name='activate'),
     url(r'^register/$', RegisterView.as_view(), name="register"),
     url(r'^questions/', include('questions.urls', namespace='questions')),
-    # url(r'^personal/', include('personal.urls', namespace='personal')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/', include(router.urls))
 ]
 
 if settings.DEBUG:
