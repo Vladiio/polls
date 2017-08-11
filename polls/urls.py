@@ -7,14 +7,18 @@ from django.conf import settings
 
 from rest_framework.routers import DefaultRouter
 
-from questions.views import QuestionListView
-from personal.views import RegisterView, activate_view, UserViewSet
+from questions.views import QuestionListView, QuestionViewSet, AnswerViewSet
+from personal.views import activate_view, RegisterView, UserViewSet
 
 router = DefaultRouter()
-router.register(r'users', UserViewSet)
+# router.register(r'users', UserViewSet)
+router.register(r'questions', QuestionViewSet)
+router.register(r'answers', AnswerViewSet)
 
 
 urlpatterns = [
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^$', QuestionListView.as_view(), name='home'),
     url(r'^about/$', TemplateView.as_view(
@@ -25,8 +29,6 @@ urlpatterns = [
     url(r'^activate/(?P<code>[\w\d]+)$', activate_view, name='activate'),
     url(r'^register/$', RegisterView.as_view(), name="register"),
     url(r'^questions/', include('questions.urls', namespace='questions')),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api/', include(router.urls))
 ]
 
 if settings.DEBUG:

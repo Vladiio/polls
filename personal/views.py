@@ -6,12 +6,17 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets
 from rest_framework import permissions
 
-from .forms import RegisterForm
-from .models import Profile
 from .serializers import UserSerializer
-
+from .models import Profile
+from .forms import RegisterForm
 
 User = get_user_model()
+
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
 
 class RegisterView(CreateView):
     form_class = RegisterForm
@@ -28,9 +33,3 @@ def activate_view(request, code=None):
     profile.activation_key = None
     profile.save()
     return redirect('/login/')
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

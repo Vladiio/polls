@@ -10,8 +10,27 @@ from django.views.generic import (
         UpdateView
         )
 
+from rest_framework import viewsets
+from rest_framework import permissions
+
 from .models import Question, Answer
 from .forms import CreateQuestionForm
+from .serializers import QuestionSerializer, AnswerSerializer
+from .permissions import IsOwnerOrReadOnlyQuestion, IsOwnerOrReadOnlyAnswer
+
+
+class QuestionViewSet(viewsets.ModelViewSet):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                                          IsOwnerOrReadOnlyQuestion)
+
+
+class AnswerViewSet(viewsets.ModelViewSet):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                                         IsOwnerOrReadOnlyAnswer)
 
 
 class VoteView(View):
@@ -94,3 +113,5 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
         question.author = self.request.user
         question.save()
         return super().form_valid(form)
+
+

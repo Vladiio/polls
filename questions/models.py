@@ -62,7 +62,8 @@ class Answer(models.Model):
     picture = models.ImageField(upload_to='answer_picture', blank=True)
 
     question = models.ForeignKey(Question,
-                                                       on_delete=models.CASCADE)
+                                                       on_delete=models.CASCADE,
+                                                       related_name="answers")
 
     def __str__(self):
         return self.title
