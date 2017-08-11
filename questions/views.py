@@ -25,6 +25,9 @@ class QuestionViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                                           IsOwnerOrReadOnlyQuestion)
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
 
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
