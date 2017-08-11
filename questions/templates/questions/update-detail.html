@@ -13,7 +13,7 @@
             </h4>
           </div>
           <div class="row">
-            {% for answer in question.answer_set.all %}
+            {% for answer in question.answers.all %}
             <div class="col-sm-3 offset-sm-1">
               <div class="card">
                 {% if answer.picture %}
