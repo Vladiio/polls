@@ -48,11 +48,18 @@ class QuestionViewSet(viewsets.ModelViewSet):
 
 class AnswerViewSet(viewsets.ModelViewSet):
     serializer_class = AnswerSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnlyAnswer)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self, *args, **kwargs):
         return Answer.objects.all()
+
+    @detail_route(methods=["POST"])
+    def vote(self, request, pk=None):
+        obj = self.get_object()
+        status = obj.make_vote(request.user)
+        return Response({'status': status,
+                         'votes': obj.votes,
+                         'answer_id': obj.id})
 
 class VoteView(View):
 

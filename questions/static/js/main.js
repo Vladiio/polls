@@ -1,20 +1,18 @@
 $(document).ready( function() {
 
     $('.vote').click( function() {
-        var answer_id = $(this).attr('data-answer'),
-              me = this;
+        var url = $(this).attr('data-url'),
+            me = this;
+        
 
         $.ajax({
-            url: "vote",
-            data: {
-                answer_id: answer_id,
-            },
-            type: "GET",
+            url: url,
+            type: "POST",
             dataType: "json",
         })
 
         .done( function(json) {
-            $("#vote_" + answer_id).html('Total ' + json.votes);
+            $("#vote_" + json.answer_id).html('Total ' + json.votes);
             $(".vote").fadeOut(1000);
         })
 

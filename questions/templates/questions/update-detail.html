@@ -27,7 +27,7 @@
                   <div class="vote-group">
                   <span id="vote_{{answer.id}}" class="badge badge-default">Total {{ answer.votes }}</span>
                   {% if request.user.is_authenticated and allow_vote%}
-                    <button type="button" data-answer={{ answer.id }} class="btn btn-primary btn-sm vote">Vote
+                    <button type="button" data-url={{ answer.get_vote_url }} class="btn btn-primary btn-sm vote">Vote
                     </button>
                     {% endif %}
                   </div>

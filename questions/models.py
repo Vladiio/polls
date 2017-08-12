@@ -69,6 +69,22 @@ class Answer(models.Model):
     def __str__(self):
         return self.title
 
+    def make_vote(self, user):
+        if user not in self.question.members.all():
+            self.votes += 1
+            self.save()
+
+            self.question.total_votes += 1
+            self.question.members.add(user)
+            self.question.save()
+
+            return 'OK'
+        return "Already voted"
+
+    def get_vote_url(self):
+        url = reverse('answer-detail', kwargs={'pk': self.pk})
+        return url + 'vote/'
+
 
 def question_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
