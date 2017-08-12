@@ -5,17 +5,22 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import viewsets
 from rest_framework import permissions
+from rest_framework import status
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.response import Response
 
 from .serializers import UserSerializer
 from .models import Profile
 from .forms import RegisterForm
+from .permissions import RegisterPermission
 
 User = get_user_model()
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (RegisterPermission,)
 
 
 class RegisterView(CreateView):

@@ -11,7 +11,7 @@ from questions.views import QuestionListView, QuestionViewSet, AnswerViewSet
 from personal.views import activate_view, RegisterView, UserViewSet
 
 router = DefaultRouter()
-# router.register(r'users', UserViewSet)
+router.register(r'users', UserViewSet)
 router.register(r'questions', QuestionViewSet)
 router.register(r'answers', AnswerViewSet)
 
