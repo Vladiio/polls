@@ -12,6 +12,9 @@ from django.views.generic import (
 
 from rest_framework import viewsets
 from rest_framework import permissions
+from rest_framework import status
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.response import Response
 
 from .models import Question, Answer
 from .forms import CreateQuestionForm
@@ -20,21 +23,36 @@ from .permissions import IsOwnerOrReadOnlyQuestion, IsOwnerOrReadOnlyAnswer
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
-    queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                                          IsOwnerOrReadOnlyQuestion)
+                          IsOwnerOrReadOnlyQuestion)
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+    def get_queryset(self, *args, **kwargs):
+        return Question.objects.all()
+
+    @detail_route(methods=['POST'])
+    def answers(self, request, pk=None):
+        obj = self.get_object()
+        serializer = AnswerSerializer(data=request.data,
+                                      context={'request': request})
+        if serializer.is_valid():
+            serializer.save(question=obj)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
 
 class AnswerViewSet(viewsets.ModelViewSet):
-    queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                                         IsOwnerOrReadOnlyAnswer)
+                          IsOwnerOrReadOnlyAnswer)
 
+    def get_queryset(self, *args, **kwargs):
+        return Answer.objects.all()
 
 class VoteView(View):
 
@@ -102,7 +120,7 @@ class QuestionUpdateDetailView(UpdateView):
         new_answer = form.cleaned_data.get('answer')
         if new_answer:
             new_answer = Answer.objects.create(title=new_answer,
-                                                                          question=obj)
+                                               question=obj)
             new_answer.save()
         return super().form_valid(form)
 

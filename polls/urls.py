@@ -7,13 +7,13 @@ from django.conf import settings
 
 from rest_framework.routers import DefaultRouter
 
-from questions.views import QuestionListView, QuestionViewSet, AnswerViewSet
+from questions.views import AnswerViewSet, QuestionViewSet, QuestionListView
 from personal.views import activate_view, RegisterView, UserViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
-router.register(r'questions', QuestionViewSet)
-router.register(r'answers', AnswerViewSet)
+router.register(r'questions', QuestionViewSet, base_name="question")
+router.register(r'answers', AnswerViewSet, base_name="answer")
 
 
 urlpatterns = [

@@ -30,7 +30,7 @@ class QuestionManager(models.Manager):
 
 class Question(models.Model):
     title = models.CharField(max_length=100,
-                                            help_text="Please, enter a title for your pool")
+                             help_text="Please, enter a title for your pool")
     slug = models.SlugField(max_length=100, blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -39,8 +39,8 @@ class Question(models.Model):
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL,
-                                                                    blank=True,
-                                                                    related_name='completed_questions')
+                                     blank=True,
+                                     related_name='completed_questions')
 
     objects = QuestionManager()
 
@@ -56,14 +56,15 @@ class Question(models.Model):
 
 class Answer(models.Model):
     title = models.CharField(max_length=100,
-                                            help_text="Please, enter a new answer",
-                                            verbose_name="Answer")
+                             help_text="Please, enter a new answer",
+                             verbose_name="Answer")
     votes = models.IntegerField(default=0)
     picture = models.ImageField(upload_to='answer_picture', blank=True)
 
     question = models.ForeignKey(Question,
-                                                       on_delete=models.CASCADE,
-                                                       related_name="answers")
+                                 on_delete=models.CASCADE,
+                                 related_name="answers",
+                                 blank=True)
 
     def __str__(self):
         return self.title
