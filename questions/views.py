@@ -62,25 +62,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
                          'votes': obj.votes,
                          'answer_id': obj.id})
 
-class VoteView(View):
-
-    def get(self, *args, **kwargs):
-        if self.request.is_ajax():
-            slug = self.kwargs.pop('slug')
-            question = get_object_or_404(Question, slug=slug)
-            answer_id = self.request.GET.get('answer_id', '')
-            answer = question.answer_set.filter(id=answer_id).first()
-
-            if self.request.user not in question.members.all():
-                answer.votes += 1
-                answer.save()
-
-                question.members.add(self.request.user)
-                question.total_votes += 1
-                question.save()
-
-            return JsonResponse({"votes": answer.votes})
-
 
 class QuestionListView(ListView):
 
