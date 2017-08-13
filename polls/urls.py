@@ -28,7 +28,9 @@ urlpatterns = [
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^activate/(?P<code>[\w\d]+)$', activate_view, name='activate'),
     url(r'^register/$', RegisterView.as_view(), name="register"),
+    url(r'^success/$', TemplateView.as_view(template_name="email_send.html"), name="success"),
     url(r'^questions/', include('questions.urls', namespace='questions')),
+
 ]
 
 if settings.DEBUG:
