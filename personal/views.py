@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
-from django.urlresolvers import reverse
 
 from rest_framework import viewsets
 from rest_framework import permissions
