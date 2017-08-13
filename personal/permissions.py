@@ -6,4 +6,6 @@ class RegisterPermission(permissions.BasePermission):
         return request.user.id == obj.id or request.user.is_superuser
 
     def has_permission(self, request, view):
+        if request.method == "POST":
+            return True
         return request.user.is_authenticated or request.user.is_superuser
