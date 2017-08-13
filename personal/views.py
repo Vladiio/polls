@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
-from django.urls import reverse_lazy
+from django.urlresolvers import reverse
 
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -24,7 +24,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class RegisterView(CreateView):
     form_class = RegisterForm
     template_name = 'personal/register.html'
-    success_url = '/login/'
+    success_url = '/success/'
 
 
 def activate_view(request, code=None):
@@ -35,4 +35,4 @@ def activate_view(request, code=None):
     profile.activated = True
     profile.activation_key = None
     profile.save()
-    return redirect(reverse_lazy('success'))
+    return redirect('/login/')
