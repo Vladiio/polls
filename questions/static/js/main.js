@@ -3,11 +3,10 @@ $(document).ready( function() {
     $('.vote').click( function() {
         var url = $(this).attr('data-url'),
             me = this;
-        
 
         $.ajax({
             url: url,
-            type: "POST",
+            type: "GET",
             dataType: "json",
         })
 
